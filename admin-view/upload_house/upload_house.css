@@ -1,0 +1,12 @@
+@import url("../../global.css");
+
+form {
+    width:500px;
+}
+
+.form-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
