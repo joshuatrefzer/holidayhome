@@ -49,4 +49,4 @@ if (isset($data['tag_name']) && !empty($data['tag_name'])) {
     echo json_encode(['success' => false, 'message' => 'Tag-Name ist leer oder ungültig']);
 }
 
-$conn->close();  // Schließe die Datenbankverbindung
+$conn->close();  

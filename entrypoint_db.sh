@@ -11,12 +11,12 @@ CREATE TABLE users (
 CREATE TABLE houses (
     id INT PRIMARY KEY AUTO_INCREMENT,
     price_per_day DECIMAL(10, 2) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     country VARCHAR(255) NOT NULL,
     street VARCHAR(255) NOT NULL,
     house_number VARCHAR(20),
     postal_code VARCHAR(20),
     landlord INT,
-    main_img VARCHAR(255),
     FOREIGN KEY (landlord) REFERENCES users(id) ON DELETE SET NULL
 );
 
@@ -37,10 +37,11 @@ CREATE TABLE house_images (
     id INT PRIMARY KEY AUTO_INCREMENT,
     house_id INT,
     image_url VARCHAR(255) NOT NULL,
-    image_type ENUM('indoor', 'outdoor') NOT NULL,
+    image_type ENUM('indoor', 'outdoor', 'main') NOT NULL, 
     is_main_image BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (house_id) REFERENCES houses(id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE activities (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -108,5 +109,6 @@ VALUES
 
 INSERT INTO tags (tag_name)
 VALUES 
-(' vacation')
-(' beach')
+(' vacation'),
+(' beach'),
+('romantic');
