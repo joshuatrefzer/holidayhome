@@ -109,6 +109,25 @@ VALUES
 
 INSERT INTO tags (tag_name)
 VALUES 
-(' vacation'),
-(' beach'),
-('romantic');
+('vacation'),
+('beach'),
+('romantic'),
+('adventure'),
+('family'),
+('luxury'),
+('nature'),
+('historical'),
+('spa'),
+('wildlife'),
+('culture'),
+('city'),
+('mountains'),
+('sunset'),
+('relaxation'),
+('romance'),
+('scenic'),
+('hiking'),
+('golf'),
+('ocean'),
+('winter');
+

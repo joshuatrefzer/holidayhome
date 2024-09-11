@@ -191,27 +191,12 @@ function handleCheckboxChange(checkbox, arrayName) {
 function uploadHouse(event) {
     event.preventDefault();
 
-
-    const house = getJSON();
-    createNewHouse(house);
-
-    // if (formIsValid()) {
-
-
-    //     //POst request -  Main img
-
-    //     //POST request House
-    //     //Response ID -> Resquest 
-    //     //für
-    // //Activities 
-    // //Facilities
-    // //selected Tags
-    // //imgs indoor, outdoor
-
-
-    // }
-
-
+    if (formIsValid()) {
+        const house = getJSON();
+        createNewHouse(house);
+    } else {
+        alert('Bitte Fülle die Form richtig aus!')
+    }
 }
 
 
@@ -327,11 +312,9 @@ function getValue(id) {
 }
 
 function formIsValid() {
-    return activities.length >= 3 && facilities.length >= 3 && selectedTags.length >= 5
-    //Ist ein Main- Bild ausgesucht 
-    //Sind 5 Indoor imgs ausgesucht 
-    // Sind 5 Outdoor Imgs ausgesucht? 
-
-
+    return activities.length >= 3 &&
+        facilities.length >= 3 &&
+        selectedTags.length >= 5 &&
+        imgsAreValid();
 }
 

@@ -36,13 +36,13 @@ function uploadImages(houseId) {
     const indoorImgs = document.getElementById('indoor-file-upload').files;
     for (let i = 0; i < indoorImgs.length; i++) {
         formData.append('indoor_img[]', indoorImgs[i]);
-        console.log('Indoor image appended:', indoorImgs[i].name);
+
     }
 
     const outdoorImgs = document.getElementById('outdoor-file-upload').files;
     for (let i = 0; i < outdoorImgs.length; i++) {
         formData.append('outdoor_img[]', outdoorImgs[i]);
-        console.log('Outdoor image appended:', outdoorImgs[i].name);
+
     }
 
     console.log('FormData contents:');
@@ -54,18 +54,30 @@ function uploadImages(houseId) {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Server response:', data); 
-        if (data.success) {
-            console.log('upload was successful');
-        } else {
-            alert('Error uploading images: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                clearForm();
+                alert('added successfully');
+            } else {
+                alert('Error uploading images: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function imgsAreValid() {
+    const indoorImgs = document.getElementById('indoor-file-upload').files;
+    const outdoorImgs = document.getElementById('outdoor-file-upload').files;
+    const mainImg = document.getElementById('main-file-upload').files[0];
+
+    if (indoorImgs.length >= 5 && outdoorImgs.length >= 5 && mainImg) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 

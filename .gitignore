@@ -1,1 +1,6 @@
 db_connection.php
+uploads/houses
+
+*.jpeg
+*.jpg
+*.png
