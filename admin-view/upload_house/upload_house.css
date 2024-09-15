@@ -1,7 +1,7 @@
 @import url("../../global.css");
 
 form {
-    width:900px;
+    width:1000px;
 }
 
 .form-row {
@@ -13,17 +13,40 @@ form {
 
 .checkbox {
     min-width: 10px;
+    box-shadow: none;
+}
+
+.checkbox-wrapper {
+    height: 20px;
+    width: fit-content !important;
+    display: flex;
+    
+    align-items: center;
+    margin-right: 10px;
+    padding: 3px;
+    box-shadow: 1px 1px 5px rgba(128, 128, 128, 0.579);
+    border-radius: var(--br);
+    
+}
+
+.checkbox-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .checkbox-container {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    flex-wrap: wrap;
     
 }
 
 h3 {
     margin: 0;
+    font-weight: 200;
+    font-size: 15px;
+    margin: 10px 0px;
 }
 
 .tag-component {
@@ -36,12 +59,19 @@ h3 {
 
 .tag-input-container {
     height: 100%;
-    width: 30%;
+    width: 225px;
+}
+
+.tag-wrapper {
+   margin-top: 10px;
+   margin-bottom: 10px;
+   border-radius: var(--br);
+
 }
 
 .tag-container {
     height: 100%;
-    width: 70%;
+    width: calc(100% - 225px);
     display: flex;
     flex-wrap: wrap;
 }
@@ -94,8 +124,8 @@ h3 {
 }
 
 .tag-search {
-    margin: 0 !important;
     width: 100%;
+    margin: 0 !important;
     box-sizing: border-box;
 }
 
@@ -137,6 +167,8 @@ h3 {
     flex-direction: column;
     align-items: center;
     width: 280px;
+    box-shadow: 1px 1px 5px grey;
+    border-radius: var(--br);
 }
 
 .preview-container {

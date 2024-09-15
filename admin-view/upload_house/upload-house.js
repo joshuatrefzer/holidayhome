@@ -21,8 +21,10 @@ function fetchFacilities() {
             let facilitiesSelect = document.getElementById('facilities');
             data.forEach(facility => {
                 facilitiesSelect.innerHTML += `
+                <div class="checkbox-wrapper">
                 <input class="checkbox" type="checkbox" value="${facility.id}" onchange="handleCheckboxChange(this , 'facilities')">
                 <label>${facility.facility_name}</label>
+                </div>
             `;
             });
         })
@@ -38,8 +40,10 @@ function fetchActivities() {
             let activitySelect = document.getElementById('activities');
             data.forEach(activity => {
                 activitySelect.innerHTML += `
-                <input class="checkbox" type="checkbox" value="${activity.id}" onchange="handleCheckboxChange(this , 'activities')">
-                <label>${activity.activity_name}</label>
+                <div class="checkbox-wrapper">
+                    <input class="checkbox" type="checkbox" value="${activity.id}" onchange="handleCheckboxChange(this , 'activities')">
+                    <label>${activity.activity_name}</label>
+                </div>
             `;
             });
         })

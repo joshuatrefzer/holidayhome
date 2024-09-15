@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload House</title>
     <link rel="stylesheet" type="text/css" href="upload_house.css">
+    <script src="../../global.js"></script>
     <script src="upload-house.js"></script>
     <script src="upload-imgs.js"></script>
     
@@ -14,7 +15,7 @@
 <!-- HEADER -->
     <?php include '../../header/admin-header.php'; ?>    
 
-
+<main class="component-wrapper">
 <h1>New offering</h1>
 
 <form class="column-center" onsubmit="uploadHouse(event)"  id="upload-form">
@@ -31,33 +32,26 @@
         <input required minlength="5" maxlength="5" placeholder="postal code" type="text" name="postal_code" id="postal-code" pattern="^\d+$" >
     </div>
 
-<!-- checkboxes -->
-    <div class="checkbox-container">
-        <h3>Activities (min. 3)</h3>
-        <div class="checkboxes d-f-ai-c " id="activities"></div>
-    </div>
-
-    <div class="checkbox-container">
-        <h3>Facilities (min. 3)</h3>
-        <div class="d-f-ai-c" id="facilities"></div>
-    </div>
 
 
-<!-- Tags -->
-<div class="center-column full-width">
-    <h3>Tags</h3>
-    <div class="tag-component">
-        <div class="tag-input-container">
-            <input id="search-input" placeholder="search tags" class="tag-search" onkeyup="searchTags()" type="text">
-            <div id="tag-dropdown" class="dropdown"></div>
-        </div>
-        <div id="tag-container" class="tag-container"></div>
-    </div>
+
     
+<!-- checkboxes -->
+ <div class="checkbox-row">
+    <div class="checkbox-container">
+            <h3>select activities (min. 3)</h3>
+            <div class="checkboxes d-f-ai-c " id="activities"></div>
+    </div>
+
+        <div class="checkbox-container">
+            <h3>select facilities (min. 3)</h3>
+            <div class="d-f-ai-c" id="facilities"></div>
+        </div>
 </div>
+    
 
 <!-- IMG UPLOADS -->
-    <div class="form-row">
+    <div style="margin-top:20px;" class="form-row">
     <!-- Upload Main Image -->
      <div class="imgs-container">
         <label for="main-file-upload" class="custom-file-upload btn-2">
@@ -90,11 +84,24 @@
     
 </div>
 
+<!-- Tags -->
+<div class="center-column full-width tag-wrapper">
+    <div class="tag-component">
+        <div class="tag-input-container">
+            <input id="search-input" placeholder="search tags" class="tag-search" onkeyup="searchTags()" type="text">
+            <div id="tag-dropdown" class="dropdown"></div>
+        </div>
+        <div id="tag-container" class="tag-container"></div>
+    </div>
+</div>
+
     <div class="row-space-around">
         <button class="btn-1" type="submit">Submit Form</button>
         <button class="btn-2" type="reset" onclick="clearForm()"> Clear</button>
     </div>
     
 </form>
+</main>
+
 </body>
 </html>
