@@ -3,7 +3,7 @@ houses = [];
 
 
 window.onload = (() => {
-    getHousesAfterAdminId(admin.id);
+    getHousesAfterAdminId(user.id);
 });
 
 
@@ -66,3 +66,4 @@ async function updateHouses() {
         `;
     }
 }
+    

@@ -1,0 +1,117 @@
+
+.component-wrapper {
+    flex-direction: row;
+}
+
+.right , .left {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.right {
+    width: 60%;
+}
+
+.left {
+    width: 40%;
+    align-items: center;
+}
+
+.main-img {
+    margin-top: 40px;
+    object-fit: cover;
+    width: 80%;
+    box-sizing: border-box;
+    box-shadow: 1px 1px 5px  grey;
+}
+
+.left-boxes {
+    margin-top: 40px;
+    width: 80%;
+    height: fit-content;
+}
+
+.activity , .facility , .tag {
+    padding: 5px;
+    border-radius: var(--br);
+    box-shadow: 1px 1px 5px grey;
+}
+
+.row {
+    width: 100%;
+    display: flex;
+    align-items: end;
+    gap: 40px;
+}
+
+h1, h3 {
+    margin: 0;
+}
+
+h3 {
+    font-weight: 200;
+}
+
+.house-container{ 
+    margin-top: 40px;
+    width: 100%;
+    height: 25%;
+}
+
+.country {
+    font-size: 20px;
+    font-weight: 200;
+    color: grey;
+}
+
+.adress {
+    margin-top: 40px;
+}
+
+.price {
+    color: grey;
+}
+
+.img-container {
+    height: 75%;
+    width: 100%;
+}
+
+.gallery-image {
+    height: 120px;
+}
+
+.gallery-image:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.indoor-container {
+    width: 90%;
+    padding: 30px;
+    padding-left: 0;
+    position: relative;
+    overflow-x: scroll;
+}
+
+.fixed-headline {
+    position: sticky;
+    top: 0px;
+    left: 0px;
+}
+
+.checkbox {
+    width: 15px;
+    height: 15px;
+    min-width: 10px !important;
+}
+
+form {
+    width: 80%; 
+}
+
+.datepicker {
+    min-width: 150px;
+    width: 150px;
+}
