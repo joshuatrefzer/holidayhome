@@ -1,6 +1,6 @@
 
 
-Gehe in dein phpmyAdmin und füre Folgendes als SQL aus, somit sollte die app lokal verfügbar sein
+Gehe in dein phpmyAdmin und führe folgende Datei als SQL aus, somit sollte die app lokal verfügbar sein
 
 ```sql
 -- Erstellen der Datenbank
