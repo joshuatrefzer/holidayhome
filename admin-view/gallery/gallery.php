@@ -15,6 +15,17 @@
     <main class="component-wrapper">
         <h1>MY OFFERINGS</h1>
         <div id="house-container" class="container"></div>
+
+
+        <dialog id="delete-question">
+            <p>Do you really want to delete this offering?</p>
+            <div class="row-space-around">
+                <button onclick="closeDialog()" class="btn-1">No</button>
+                <button onclick="deleteHouse()" class="btn-2">Yes</button>
+            </div>
+        </dialog>
+
+
     </main>
     
 

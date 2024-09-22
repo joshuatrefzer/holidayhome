@@ -1,28 +1,30 @@
 
 let allTags = [];
+let allFacilities = [];
+let allActivities = [];
 let selectedTags = [];
 let facilities = [];
 let activities = [];
 createdHouseId = 0;
 
 
-window.onload = () => {
+window.addEventListener('load', () => {
     fetchFacilities();
     fetchActivities();
     fetchTags();
-};
+});
 
 function fetchFacilities() {
     fetch('../get_facilities.php')
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            allFacilities = data;
 
             let facilitiesSelect = document.getElementById('facilities');
             data.forEach(facility => {
                 facilitiesSelect.innerHTML += `
                 <div class="checkbox-wrapper">
-                <input class="checkbox" type="checkbox" value="${facility.id}" onchange="handleCheckboxChange(this , 'facilities')">
+                <input id="facility${facility.id}" class="checkbox" type="checkbox" value="${facility.id}" onchange="handleCheckboxChange(this , 'facilities')">
                 <label>${facility.facility_name}</label>
                 </div>
             `;
@@ -37,11 +39,12 @@ function fetchActivities() {
     fetch('../get_activities.php')
         .then(response => response.json())
         .then(data => {
+            allActivities = data;
             let activitySelect = document.getElementById('activities');
             data.forEach(activity => {
                 activitySelect.innerHTML += `
                 <div class="checkbox-wrapper">
-                    <input class="checkbox" type="checkbox" value="${activity.id}" onchange="handleCheckboxChange(this , 'activities')">
+                    <input id="activity${activity.id}" class="checkbox" type="checkbox" value="${activity.id}" onchange="handleCheckboxChange(this , 'activities')">
                     <label>${activity.activity_name}</label>
                 </div>
             `;
@@ -305,7 +308,7 @@ function getJSON() {
         street: getValue('street'),
         house_number: getValue('house-number'),
         postal_code: getValue('postal-code'),
-        landlord: 1
+        landlord: user.id
     }
     return data
 }
@@ -316,6 +319,7 @@ function getValue(id) {
 }
 
 function formIsValid() {
+    debugger
     return activities.length >= 3 &&
         facilities.length >= 3 &&
         selectedTags.length >= 5 &&

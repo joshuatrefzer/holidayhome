@@ -1,10 +1,12 @@
 let houseId;
 let today = new Date().toISOString().split('T')[0];
 let tomorrow = getTomorrow();
+let bookingDetails;
+let bookedDaysAmount;
+let galleryHouseIndex;
 let indoorImages = [];
 let outdoorImages = [];
 let selectedFacilities = [];
-
 
 window.onload = () => {
     houseId = getHouseIdFromUrl();
@@ -21,7 +23,7 @@ function getHouseIdFromUrl() {
 
 async function showData() {
     try {
-        await viewHouseDetails(houseId); 
+        await getHouseDetails(houseId); 
         showMainImg();
         showActivities();
         showFacilities();
@@ -43,7 +45,6 @@ function showMainImg() {
 function initDatePicker(){
     document.getElementById("start-date").setAttribute("min", today);
     document.getElementById("end-date").setAttribute("min", tomorrow);
-    /// TODO -> get bookings -> Intervalle unklickbar machen
 }
 
 function getTomorrow() {
@@ -109,7 +110,6 @@ function showHouseDetails() {
                 <h3 class="price">${house.price_per_day}$ per day</h3>
             </div>
             <div class="adress">
-                <h3>Adress:</h3><br>
                 <span class="country">${house.country}</span><br>
                 <span>${house.street}</span>
                 <span>${house.house_number}</span><br>
@@ -130,7 +130,7 @@ function showIndoorImages(){
     const container = document.getElementById('indoor-container');
     indoorImages.forEach( img => {
         container.innerHTML += `
-            <img src="/holidayhome${img.image_url}" alt="" class="gallery-image">
+            <img onclick="openGallery('${img.image_url}')" src="/holidayhome${img.image_url}" alt="" class="gallery-image">
         `;
     });
 }
@@ -139,7 +139,7 @@ function showOutdoorImages(){
     const container = document.getElementById('outdoor-container');
     outdoorImages.forEach( img => {
         container.innerHTML += `
-            <img src="/holidayhome${img.image_url}" alt="" class="gallery-image">
+            <img onclick="openGallery('${img.image_url}')" src="/holidayhome${img.image_url}" alt="" class="gallery-image">
         `;
     });
 }
@@ -227,8 +227,6 @@ function disableBookedDates(disabledDates) {
 }
 
 
-
-//TODO Feedback
 function handleSubmit(event) {
     event.preventDefault();
     if (!dateRangeIsValid()) return;
@@ -257,12 +255,10 @@ function handleSubmit(event) {
     .then(result => {
         if (result.success) {
             console.log('Buchung erfolgreich:', result.message);
-
-            window.location.href = '/holidayhome/user-view/bookings.php';
-            // Hier kannst du weiterverarbeiten, z.B. eine Bestätigung anzeigen
+            bookingDetails = result.booking;
+            showDialog();
         } else {
-            console.error('Fehler bei der Buchung:', result.message);
-            // Hier kannst du eine Fehlermeldung anzeigen
+            alert('Fehler bei der Buchung');
         }
     })
     .catch(error => {
@@ -278,6 +274,7 @@ function getPrice(startDate, endDate) {
     
     const timeDifference = end - start;
     const daysAmount = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+    bookedDaysAmount = daysAmount;
 
     return daysAmount > 0 ? daysAmount * houseDetail.house.price_per_day : 0; 
 }
@@ -306,4 +303,98 @@ function dateRangeIsValid() {
         document.getElementById('end-date').setCustomValidity('');
         return true;
     }
+}
+
+function showDialog(){
+    const dialog = document.getElementById('bookingDialog');
+    dialog.showModal();
+    dialog.classList.remove('hide');
+    showBookingDetails();
+}
+
+function showBookingDetails(){
+    let container = document.getElementById('booking-details');
+    container.innerHTML += `
+            <table class="booking-table">
+            <thead>
+                <tr>
+                    <th>Details</th>
+                    <th style="text-align: end;">Values</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Your house</td>
+                    <td>${houseDetail.house.name}</td>
+                </tr>
+                <tr>
+                    <td>Check-in</td>
+                    <td>${convertDateFormat(bookingDetails.check_in)}</td>
+                </tr>
+                <tr>
+                    <td>Check-out</td>
+                    <td>${convertDateFormat(bookingDetails.check_out)}</td>
+                </tr>
+                <tr>
+                    <td>Dayprice</td>
+                    <td>${houseDetail.house.price_per_day}$</td>
+                </tr>
+                <tr>
+                    <td>Booked days</td>
+                    <td>${bookedDaysAmount}</td>
+                </tr>
+                <tr>
+                    <td class="total-sum">Total Sum</td>
+                    <td class="total-sum">${bookingDetails.total_price}$</td>
+                </tr>
+            </tbody>
+        </table>
+    
+    `;
+}
+
+function convertDateFormat(dateString) {
+    const [year, month, day] = dateString.split('-');
+    return `${day}.${month}.${year}`;
+}
+
+
+function openGallery(url){
+    debugger
+    let dialog = document.getElementById('gallery');
+    dialog.showModal();
+    let imgs = houseDetail.images;
+    galleryHouseIndex= imgs.findIndex( img => img.image_url === url );
+    showGalleryImg(galleryHouseIndex);
+}
+
+function showGalleryImg(index){
+    debugger
+    let imgs = houseDetail.images;
+    let container = document.getElementById('gallery-container');
+
+    if (index > imgs.length || index < 0) {
+        galleryHouseIndex = 0;
+    } else {
+        galleryHouseIndex = index;
+    }
+
+    container.innerHTML = `
+        <img class="gallery-img" src="/holidayhome${imgs[galleryHouseIndex].image_url}" alt="${imgs[index].image_url}">
+    `;
+}
+
+function nextImg() {
+    let newIndex= galleryHouseIndex + 1;
+    showGalleryImg(newIndex);
+}
+
+function previousImg() {
+    let newIndex= galleryHouseIndex - 1;
+    showGalleryImg(newIndex);
+}
+
+function closeGallery(){
+    let dialog = document.getElementById('gallery');
+    dialog.close();
 }

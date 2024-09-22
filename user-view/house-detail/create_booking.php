@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Debugging: Buchung erfolgreich
             error_log("Buchung erfolgreich. Buchungs-ID: " . $booking_id);
 
-            // Für jede Facility den Namen in eine ID umwandeln
+            // Für jede Facility den Namen in eine ID umwandeln und verknüpfen
             foreach ($facilities as $facility_name) {
                 $facility_query = "SELECT id FROM facilities WHERE facility_name = '$facility_name'";
                 $result = $conn->query($facility_query);
@@ -70,12 +70,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            // Erfolgreiche Buchung und Verknüpfung
-            echo json_encode([
-                'success' => true,
-                'message' => 'Buchung erfolgreich erstellt und Facilities verknüpft.',
-                'booking_id' => $booking_id
-            ]);
+            // Jetzt das Buchungsobjekt abrufen, um es als JSON zurückzugeben
+            $booking_query = "SELECT * FROM bookings WHERE id = '$booking_id'";
+            $booking_result = $conn->query($booking_query);
+
+            if ($booking_result->num_rows > 0) {
+                $booking_data = $booking_result->fetch_assoc();
+
+                // Alle verknüpften Facilities für diese Buchung abrufen
+                $facilities_query = "SELECT f.facility_name FROM booking_facilities bf
+                                     JOIN facilities f ON bf.facility_id = f.id
+                                     WHERE bf.booking_id = '$booking_id'";
+                $facilities_result = $conn->query($facilities_query);
+                $facility_names = [];
+
+                if ($facilities_result->num_rows > 0) {
+                    while ($row = $facilities_result->fetch_assoc()) {
+                        $facility_names[] = $row['facility_name'];
+                    }
+                }
+
+                // Erfolgreiche Buchung und Rückgabe des Buchungsobjekts
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Buchung erfolgreich erstellt.',
+                    'booking' => [
+                        'booking_id' => $booking_data['id'],
+                        'user_id' => $booking_data['user_id'],
+                        'house_id' => $booking_data['house_id'],
+                        'check_in' => $booking_data['check_in'],
+                        'check_out' => $booking_data['check_out'],
+                        'total_price' => $booking_data['total_price'],
+                        'facilities' => $facility_names
+                    ]
+                ]);
+
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Fehler beim Abrufen der Buchung']);
+            }
 
         } else {
             error_log("Fehler beim Erstellen der Buchung: " . $conn->error);
@@ -95,4 +127,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $conn->close();
-

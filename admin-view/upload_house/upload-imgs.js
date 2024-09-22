@@ -1,4 +1,4 @@
-
+let editMode = false;
 
 
 function previewImages(input, previewElementId) {
@@ -69,6 +69,9 @@ function uploadImages(houseId) {
 }
 
 function imgsAreValid() {
+    if (editMode) {
+        return true;
+    }
     const indoorImgs = document.getElementById('indoor-file-upload').files;
     const outdoorImgs = document.getElementById('outdoor-file-upload').files;
     const mainImg = document.getElementById('main-file-upload').files[0];

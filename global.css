@@ -1,5 +1,6 @@
 :root {
     --color-1: #6464b1;
+    --color-1-light: #8989b3;
     --color-2: rgb(84, 84, 84);
     --color-3: rgb(83, 198, 198);
     --br:5px;
@@ -68,6 +69,25 @@ label, button {
     font-size: 12px;
 }
 
+.close {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transform: rotate(45deg);
+    user-select: none; 
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    height: 20px;
+    width: 20px;
+    font-size: 40px;
+    font-weight: 200;
+}
+
+.close:hover {
+    opacity: 0.7;
+}
 
 .component-wrapper {
     display: flex;
@@ -78,6 +98,7 @@ label, button {
     height: calc(100dvh - 60px);
     width: 100%;
     overflow-y: scroll;
+    position: relative;
 }
 
 .btn-1 {
@@ -111,11 +132,10 @@ label, button {
 }
 
 .btn-4 {
-    background-color: rgb(195, 195, 195);
+    background-color: rgb(127, 127, 127);
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 0.7;
     border: 0;
     border-radius: var(--br);
     padding: 5px;
@@ -123,7 +143,7 @@ label, button {
 
 .btn-4:hover {
     cursor: pointer;
-    opacity: 1;
+    opacity: 0.8;
 }
 
 
@@ -205,4 +225,32 @@ a:hover {
 
 .br {
     border-radius: var(--br);
+}
+
+.back-button {
+    position: fixed;
+    top: 70px;
+    left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.back-button img {
+    height: 25px;
+}
+
+.hide {
+    display: none;
+}
+
+dialog {
+    flex-direction: column;
+    border: none;
+    border-radius: var(--br);
+    box-shadow: 1px 1px 10px black;
+}
+
+dialog::backdrop {
+    backdrop-filter: blur(5px); 
 }

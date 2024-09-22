@@ -1,12 +1,12 @@
 let user = {
     name: 'Max',
-    id: 2 //admin 1
+    id: 1 //admin 1
 }
 
 let houseDetail;
 
 
-async function viewHouseDetails(id) {
+async function getHouseDetails(id) {
     try {
         const response = await fetch('/holidayhome/get_house_details.php?house_id=' + id);
         if (!response.ok) {

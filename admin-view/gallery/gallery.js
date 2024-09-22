@@ -1,6 +1,6 @@
 
 houses = [];
-
+let houseToDelete;
 
 window.onload = (() => {
     getHousesAfterAdminId(user.id);
@@ -45,6 +45,7 @@ async function getMainImg(id) {
 
 async function updateHouses() {
     const container = document.getElementById('house-container');
+    container.innerHTML = "";
     
     for (const house of houses) {
         const img = await getMainImg(house.id); 
@@ -59,11 +60,52 @@ async function updateHouses() {
             </div>
 
             <div class="button-overlay">
-                <button class="btn-4"><img src="../../img/delete.png" alt="Delete"></button>
-                <button class="btn-4"><img src="../../img/edit.png" alt="Edit"></button>
+                <button onclick="deleteQuestion(${house.id})" class="btn-4"><img src="../../img/delete.png" alt="Delete"></button>
+                <button onclick="editHouse(${house.id})" class="btn-4"><img src="../../img/edit.png" alt="Edit"></button>
             </div>
         </div>
         `;
     }
 }
-    
+
+function deleteQuestion(id){
+    houseToDelete = id;
+    const dialog = document.getElementById('delete-question');
+    dialog.showModal();
+}
+
+
+function deleteHouse() {
+    let id = houseToDelete;
+    fetch('../delete_house.php', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            getHousesAfterAdminId(user.id);
+            closeDialog();
+        } else {
+            console.error('Fehler:', data.message);
+            alert('Fehler: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Fehler:', error);
+        alert('Ein Fehler ist aufgetreten');
+    });
+}
+
+
+function closeDialog(){
+    const dialog = document.getElementById('delete-question');
+    dialog.close();
+}
+
+function editHouse(houseId){
+    window.location.href = '../edit-house/edit_house.php?house_id='+ houseId;
+}

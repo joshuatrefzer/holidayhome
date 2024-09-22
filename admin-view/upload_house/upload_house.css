@@ -188,3 +188,16 @@ h3 {
     height: 30px;
 }
 
+
+.existing-img {
+    height: 60px;
+    margin: 5px;
+}
+
+.edit-house-headline {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+}

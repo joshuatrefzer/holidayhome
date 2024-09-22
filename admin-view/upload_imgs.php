@@ -38,6 +38,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return $basename . '_' . $hash . '.' . $extension;
     }
 
+    // Funktion zum Löschen des vorherigen Main-Bildes
+    function deletePreviousMainImage($house_id) {
+        global $conn, $upload_dir;
+
+        // Finde das vorherige Main-Bild
+        $query = "SELECT image_url FROM house_images WHERE house_id = '$house_id' AND is_main_image = 1";
+        $result = $conn->query($query);
+
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $image_path = '../' . $row['image_url'];  // Korrigiere den relativen Pfad
+
+            // Lösche das Bild von der Festplatte
+            if (file_exists($image_path)) {
+                unlink($image_path);
+            }
+
+            // Lösche den Eintrag aus der Datenbank
+            $delete_query = "DELETE FROM house_images WHERE house_id = '$house_id' AND is_main_image = 1";
+            $conn->query($delete_query);
+        }
+    }
+
     // Funktion zum Hochladen und Speichern eines Bildes
     function uploadImage($file, $image_type, $house_id, $is_main = false) {
         global $conn, $upload_dir;
@@ -58,12 +81,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Hauptbild hochladen
+    // Überprüfe, ob ein Main-Bild hochgeladen wurde und lösche das vorherige
     if (isset($_FILES['main_img']) && $_FILES['main_img']['error'] === UPLOAD_ERR_OK) {
+        // Lösche das vorhandene Main-Bild
+        deletePreviousMainImage($house_id);
+        
+        // Lade das neue Main-Bild hoch
         uploadImage($_FILES['main_img'], 'main', $house_id, true);
     }
 
-    // Indoor-Bilder hochladen
+    // Indoor-Bilder hochladen (optional, kein Fehler, wenn keine vorhanden sind)
     if (isset($_FILES['indoor_img'])) {
         foreach ($_FILES['indoor_img']['tmp_name'] as $index => $tmp_name) {
             if ($_FILES['indoor_img']['error'][$index] === UPLOAD_ERR_OK) {
@@ -76,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Outdoor-Bilder hochladen
+    // Outdoor-Bilder hochladen (optional, kein Fehler, wenn keine vorhanden sind)
     if (isset($_FILES['outdoor_img'])) {
         foreach ($_FILES['outdoor_img']['tmp_name'] as $index => $tmp_name) {
             if ($_FILES['outdoor_img']['error'][$index] === UPLOAD_ERR_OK) {
