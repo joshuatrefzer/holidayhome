@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="landing-page.css">
+    <script src="global.js"></script>
+    <script src="auth.js"></script>
+    <title>Login</title>
+</head>
+
+<body>
+    <h1>LOGIN</h1>
+    <div class="welcome-dialog">
+        <p>Please type in your data to login to <strong>holidayhome</strong></p>
+        <p style="font-size: 15px;">If you have set a password at sign up, type in your password.</p>
+        <form onsubmit="prepareLogin(event)" >
+            <input required id="username" type="text" placeholder="username">
+            <input id="password" type="password" placeholder="password">
+            <p style="font-size: 12px;"><strong>Demo Admin</strong>: username:"admin" , password: "adminPassword"</p>
+            <p style="font-size: 12px;"><strong>Demo User</strong>: username:"normaluser" , password: ""</p>
+            <button type="submit" class="btn-1">Login</button>
+        </form>
+        
+        <p style="font-size: 15px;">If you don't have an account, please click <a href="index.html"><strong> here</strong></a></p>
+    </div>
+    <dialog class="feedback-dialog" id="feedback-dialog"></dialog>
+        <div id="feedback-container" class="feedback-container"></div>
+    </dialog>
+</body>
+
+</html>

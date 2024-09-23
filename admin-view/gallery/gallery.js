@@ -3,11 +3,12 @@ houses = [];
 let houseToDelete;
 
 window.onload = (() => {
+    handleAuthentication();
     getHousesAfterAdminId(user.id);
 });
 
 
-function getHousesAfterAdminId(adminId) {
+async function getHousesAfterAdminId(adminId) {
     fetch(`get_offerings.php?landlord=${adminId}`)
         .then(response => response.json())
         .then(data => {
@@ -16,11 +17,11 @@ function getHousesAfterAdminId(adminId) {
                 updateHouses();
             } else {
                 console.log('Message:', data.message);
-                alert(data.message);
+                getFeedback('Something went wrong by fetching the houses..')
             }
         })
         .catch(error => {
-            console.error('Fetch error:', error);
+            getFeedback('Something went wrong by fetching the houses..');
         });
 }
 
@@ -34,11 +35,12 @@ async function getMainImg(id) {
             return data.image.image_url;
         } else {
             console.log('Message:', data.message);
-            alert(data.message);
+            getFeedback('Something went wrong by fetching the imgs..');
             return 'error';
         }
     } catch (error) {
         console.error('Fetch error:', error);
+        getFeedback('Something went wrong by fetching the imgs..');
         return 'error';
     }
 }
@@ -91,12 +93,11 @@ function deleteHouse() {
             closeDialog();
         } else {
             console.error('Fehler:', data.message);
-            alert('Fehler: ' + data.message);
+            getFeedback('Something went wrong');
         }
     })
     .catch(error => {
-        console.error('Fehler:', error);
-        alert('Ein Fehler ist aufgetreten');
+        getFeedback('Something went wrong');
     });
 }
 

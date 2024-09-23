@@ -58,13 +58,13 @@ function uploadImages(houseId) {
         .then(data => {
             if (data.success) {
                 clearForm();
-                alert('added successfully');
+                getFeedback('Upload was successful');
             } else {
-                alert('Error uploading images: ' + data.message);
+                getFeedback('Upload failed');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            getFeedback('Upload failed');
         });
 }
 

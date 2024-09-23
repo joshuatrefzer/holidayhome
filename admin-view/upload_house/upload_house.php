@@ -101,6 +101,11 @@
     </div>
     
 </form>
+
+    <dialog class="feedback-dialog" id="feedback-dialog">
+        <div id="feedback-container" class="feedback-container"></div>
+    </dialog>
+
 </main>
 
 </body>

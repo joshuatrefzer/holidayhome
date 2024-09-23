@@ -6,8 +6,7 @@ USE holidayhome;
 CREATE TABLE IF NOT EXISTS users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(255) UNIQUE NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
+    password VARCHAR(255),  -- Passwort ist optional und wird nicht gehashed gespeichert
     role ENUM('admin', 'user') DEFAULT 'user'
 );
 
@@ -92,14 +91,14 @@ CREATE TABLE IF NOT EXISTS booking_facilities (
     FOREIGN KEY (facility_id) REFERENCES facilities(id) ON DELETE CASCADE
 );
 
--- Admin-User einfügen
-INSERT INTO users (username, email, password_hash, role)
-VALUES ('admin', 'admin@example.com', 'hashedPassword', 'admin')
+-- Admin-User einfügen (mit Passwortschutz)
+INSERT INTO users (username, password, role)
+VALUES ('admin', 'adminPassword', 'admin')
 ON DUPLICATE KEY UPDATE username=username;
 
--- Normaler User einfügen
-INSERT INTO users (username, email, password_hash, role)
-VALUES ('normaluser', 'user@example.com', 'hashedPassword', 'user')
+-- Normaler User ohne Passwortschutz einfügen
+INSERT INTO users (username, role)
+VALUES ('normaluser', 'user')
 ON DUPLICATE KEY UPDATE username=username;
 
 -- Einfügen von Facilities
@@ -110,7 +109,7 @@ INSERT INTO facilities (facility_name) VALUES
 INSERT INTO activities (activity_name) VALUES 
 ('Hiking'), ('Cycling'), ('Fishing'), ('Skiing'), ('Horseback Riding');
 
--- Einfügen von Tags (alte und neue)
+-- Einfügen von Tags
 INSERT INTO tags (tag_name) VALUES 
 ('vacation'), ('beach'), ('romantic'), ('adventure'), ('family'),
 ('luxury'), ('nature'), ('historical'), ('spa'), ('wildlife'),
@@ -179,7 +178,7 @@ SELECT 2, id FROM tags WHERE tag_name IN ('romantic', 'adventure', 'nature', 'hi
 
 -- Beispiel-Bilder für Haus 2 (Schloss Mosel) einfügen
 INSERT INTO house_images (house_id, image_url, image_type, is_main_image) VALUES
-(2, '/uploads/houses/images_37a2.jpeg', 'main', 1),
+(2, '/uploads/houses/Unknown_d395.jpeg', 'main', 1),
 (2, '/uploads/houses/Unknown-6_b204.jpeg', 'indoor', 0),
 (2, '/uploads/houses/Unknown-9_fcca.jpeg', 'indoor', 0),
 (2, '/uploads/houses/Unknown-8_c950.jpeg', 'indoor', 0),

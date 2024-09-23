@@ -9,6 +9,7 @@ let outdoorImages = [];
 let selectedFacilities = [];
 
 window.onload = () => {
+    handleAuthentication();
     houseId = getHouseIdFromUrl();
     showData();
     initDatePicker();
@@ -32,7 +33,7 @@ async function showData() {
         showImages();
         getBookingDates();
     } catch (error) {
-        console.error('Fehler beim Anzeigen der Daten:', error);
+        getFeedback('Error by showing data');
     }
 }
 
@@ -84,9 +85,6 @@ function handleCheckboxChange(checkbox) {
     } else {
         selectedFacilities = selectedFacilities.filter(id => id !== boxId);
     }
-    
-    console.log(selectedFacilities);
-    
 }
 
 function showTags(){
@@ -150,45 +148,38 @@ function getBookingDates() {
     fetch('get_booking_dates.php?house_id=' + houseId)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Netzwerkantwort war nicht OK');
+                getFeedback('Something went wrong');
             }
             return response.json();
         })
         .then(result => {
             if (result.success) {
-                console.log('Buchungsdaten:', result.bookings);
-                
-                // Hier die belegten Tage verarbeiten
                 const disabledDates = [];
 
                 result.bookings.forEach(booking => {
                     let currentDate = new Date(booking.check_in);
                     const endDate = new Date(booking.check_out);
 
-                    // Alle Tage zwischen check_in und check_out sammeln
                     while (currentDate <= endDate) {
-                        disabledDates.push(new Date(currentDate)); // Datum zum Array hinzufügen
-                        currentDate.setDate(currentDate.getDate() + 1); // Einen Tag weiter
+                        disabledDates.push(new Date(currentDate)); 
+                        currentDate.setDate(currentDate.getDate() + 1); 
                     }
                 });
 
-                // Datepicker aktualisieren und die belegten Tage deaktivieren
                 disableBookedDates(disabledDates);
             } else {
-                console.error('Fehler beim Abrufen der Buchungsdaten:', result.message);
+                getFeedback('Error ..wrong booking dates' + result.message);
             }
         })
         .catch(error => {
-            console.error('Fehler beim Abrufen der Buchungsdaten:', error);
+            getFeedback('Error ..wrong booking dates' + error);
         });
 }
 
-// Diese Funktion deaktiviert die übergebenen Daten in den Datepickern
 function disableBookedDates(disabledDates) {
     const startDatePicker = document.getElementById('start-date');
     const endDatePicker = document.getElementById('end-date');
 
-    // Funktion, um Date in YYYY-MM-DD Format zu bringen (für den Datepicker)
     function formatDate(date) {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -196,10 +187,8 @@ function disableBookedDates(disabledDates) {
         return `${year}-${month}-${day}`;
     }
 
-    // Deaktivierte Daten als String-Array im YYYY-MM-DD Format
     const disabledDateStrings = disabledDates.map(date => formatDate(date));
 
-    // Start-Date und End-Date deaktivieren
     startDatePicker.addEventListener('input', function() {
         const selectedDate = new Date(startDatePicker.value);
         if (disabledDateStrings.includes(startDatePicker.value)) {
@@ -218,7 +207,6 @@ function disableBookedDates(disabledDates) {
         }
     });
 
-    // Attribute für deaktivierte Tage festlegen
     startDatePicker.setAttribute('min', new Date().toISOString().split('T')[0]);
     endDatePicker.setAttribute('min', new Date().toISOString().split('T')[0]);
 
@@ -254,15 +242,14 @@ function handleSubmit(event) {
     .then(response => response.json())
     .then(result => {
         if (result.success) {
-            console.log('Buchung erfolgreich:', result.message);
             bookingDetails = result.booking;
             showDialog();
         } else {
-            alert('Fehler bei der Buchung');
+            getFeedback('Something went wrong, error by booking your house :(');
         }
     })
     .catch(error => {
-        console.error('Fehler beim POST-Request:', error);
+        getFeedback('Something went wrong, error by booking your house :(');
     });
 }
 
@@ -280,26 +267,20 @@ function getPrice(startDate, endDate) {
 }
 
 function dateRangeIsValid() {
-    // Hole die Werte der Datepicker
     const startDate = document.getElementById('start-date').value;
     const endDate = document.getElementById('end-date').value;
 
-    // Falls ein Datum fehlt, kann keine Validierung stattfinden
     if (!startDate || !endDate) {
-        return true; // Valid, weil noch kein vollständiger Input vorliegt
+        return true; 
     }
 
-    // Konvertiere die Eingaben in Datumsobjekte
     const start = new Date(startDate);
     const end = new Date(endDate);
 
-    // Überprüfen, ob das Startdatum vor oder gleich dem Enddatum liegt
     if (start > end) {
-        // Custom Form Error
         document.getElementById('end-date').setCustomValidity('Das Enddatum darf nicht vor dem Startdatum liegen.');
         return false;
     } else {
-        // Fehler zurücksetzen, falls Daten valide sind
         document.getElementById('end-date').setCustomValidity('');
         return true;
     }

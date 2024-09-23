@@ -9,6 +9,7 @@ createdHouseId = 0;
 
 
 window.addEventListener('load', () => {
+    handleAuthentication();
     fetchFacilities();
     fetchActivities();
     fetchTags();
@@ -24,14 +25,14 @@ function fetchFacilities() {
             data.forEach(facility => {
                 facilitiesSelect.innerHTML += `
                 <div class="checkbox-wrapper">
-                <input id="facility${facility.id}" class="checkbox" type="checkbox" value="${facility.id}" onchange="handleCheckboxChange(this , 'facilities')">
-                <label>${facility.facility_name}</label>
+                    <input id="facility${facility.id}" class="checkbox" type="checkbox" value="${facility.id}" onchange="handleCheckboxChange(this , 'facilities')">
+                    <label>${facility.facility_name}</label>
                 </div>
             `;
             });
         })
         .catch(error => {
-            console.error('Error:', error);
+            getFeedback('Error by fetching facilities');
         });
 }
 
@@ -51,7 +52,7 @@ function fetchActivities() {
             });
         })
         .catch(error => {
-            console.error('Error:', error);
+            getFeedback('Error by fetching activities');
         });
 }
 
@@ -62,7 +63,7 @@ function fetchTags() {
             allTags = data;
         })
         .catch(error => {
-            console.error('Error:', error);
+            getFeedback('Error by fetching tags');
         });
 }
 
@@ -124,11 +125,11 @@ function createNewTag(input) {
                 fetchTags();
                 selectTag(data.tag.id, `${data.tag.tag_name}`);
             } else {
-                alert('Fehler beim Erstellen des Tags.');
+                getFeedback('Error by creating the tags');
             }
         })
         .catch(error => {
-            console.error('Fehler:', error);
+            getFeedback('Error by creating the tags');
         });
 }
 
@@ -156,6 +157,7 @@ function hideDropdown() {
 }
 
 function removeSelection(id) {
+    debugger
     let index = selectedTags.findIndex(tag => tag.id === id);
     if (index !== -1) {
         selectedTags.splice(index, 1);
@@ -202,7 +204,7 @@ function uploadHouse(event) {
         const house = getJSON();
         createNewHouse(house);
     } else {
-        alert('Bitte Fülle die Form richtig aus!')
+        getFeedback('Please fill the form with valid data. Facilities and activities need a minimum of 3, the indoor and outdoor Imgs need a minimum of 5.');
     }
 }
 
@@ -225,7 +227,7 @@ function createNewHouse(house) {
                 uploadImages(createdHouseId);
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => getFeedback('Error by creating new house'));
 }
 
 
@@ -249,9 +251,8 @@ function createTags() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => getFeedback('Error by creating the tags'));
     });
 }
 
@@ -271,9 +272,8 @@ function createHouseActivities() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => getFeedback('Error by create activities'));
     });
 }
 
@@ -293,9 +293,8 @@ function createHouseFacilities() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => getFeedback('Error by create activities'));
     });
 }
 

@@ -1,0 +1,52 @@
+body {
+    background-image: url('/holidayhome/img/house.jpg');
+    background-position: center;
+    background-size: cover;  /* Das Bild wird skaliert, um den gesamten Bildschirm zu bedecken */
+    background-repeat: no-repeat;  /* Verhindert die Wiederholung des Hintergrundbildes */
+    height: 100vh;
+   
+}
+
+.welcome-dialog {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50% , -50%);
+    height: fit-content;
+    box-sizing: border-box;
+    padding: 20px;
+    width: 600px;
+    background-color: rgba(255, 255, 255, 0.903);
+    border-radius: var(--br);
+    box-shadow: 1px 1px 10px black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+p {
+    font-size: 20px;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 10px;
+    font-weight: 200;
+    width: 80%;
+}
+
+input {
+    height: 30px !important;
+    width: 300px;
+}
+
+.row {
+    justify-content: center;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

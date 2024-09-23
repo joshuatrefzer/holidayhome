@@ -18,7 +18,10 @@
     <?php include '../../header/admin-header.php'; ?>    
 
 <main class="component-wrapper">
-<h1 class="edit-house-headline">Edit House</h1>
+<div class="edit-house-headline">
+<h1>Edit House</h1>
+</div>    
+
 
 <form style="margin-top: 100px;" class="column-center" onsubmit="editHouse(event)"  id="upload-form">
     <!-- input Fields -->
@@ -105,6 +108,10 @@
     
 </form>
 </main>
+
+<dialog class="feedback-dialog" id="feedback-dialog">
+    <div id="feedback-container" class="feedback-container"></div>
+</dialog>
 
 </body>
 </html>

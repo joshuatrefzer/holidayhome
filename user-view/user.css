@@ -1,3 +1,7 @@
-@import "../global.css";
 
-
+.search {
+    z-index: 20;
+    position: absolute;
+    left: 20px;
+    top: 70px;
+}
