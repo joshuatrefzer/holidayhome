@@ -128,7 +128,7 @@ function deleteUser(data) {
             if (responseData.success) {
                 window.location.href = '/holidayhome/index.html';
             } else {
-                getFeedback('Error by deleting user');
+                getFeedback('Error by deleting user, you cannot delete the demo users!');
                 console.log(responseData.message);
 
             }
