@@ -1,8 +1,8 @@
 body {
     background-image: url('/holidayhome/img/house.jpg');
     background-position: center;
-    background-size: cover;  /* Das Bild wird skaliert, um den gesamten Bildschirm zu bedecken */
-    background-repeat: no-repeat;  /* Verhindert die Wiederholung des Hintergrundbildes */
+    background-size: cover;  
+    background-repeat: no-repeat; 
     height: 100vh;
    
 }

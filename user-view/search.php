@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($searchTerms as $term) {
         $term = trim($term);
         if (!empty($term)) {
-            // Füge Bedingungen für alle gewünschten Attribute hinzu
             $conditions[] = "(h.name LIKE ? OR 
                               f.facility_name LIKE ? OR 
                               a.activity_name LIKE ? OR 
@@ -22,14 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                               h.postal_code LIKE ? OR 
                               h.country LIKE ? OR 
                               h.street LIKE ?)";
-            // Parameter für alle Bedingungen hinzufügen
-            $params[] = "%$term%"; // house name
-            $params[] = "%$term%"; // facility name
-            $params[] = "%$term%"; // activity name
-            $params[] = "%$term%"; // tag name
-            $params[] = "%$term%"; // postal code
-            $params[] = "%$term%"; // country
-            $params[] = "%$term%"; // street
+
+            $params[] = "%$term%"; 
+            $params[] = "%$term%"; 
+            $params[] = "%$term%"; 
+            $params[] = "%$term%"; 
+            $params[] = "%$term%"; 
+            $params[] = "%$term%";
+            $params[] = "%$term%"; 
         }
     }
 
@@ -45,17 +44,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         LEFT JOIN house_images hi ON h.id = hi.house_id AND hi.is_main_image = TRUE
     ";
 
-    // Verknüpfe Bedingungen mit "AND", damit alle Suchbegriffe erfüllt werden müssen
+    
     if (!empty($conditions)) {
         $sql .= " WHERE " . implode(' AND ', $conditions);
     }
 
-    // Begrenze die Anzahl der Resultate auf maximal 10
+   
     $sql .= " GROUP BY h.id LIMIT 10";
 
     $stmt = $conn->prepare($sql);
 
-    // Binde die Parameter
     if (!empty($params)) {
         $stmt->bind_param(str_repeat('s', count($params)), ...$params);
     }
